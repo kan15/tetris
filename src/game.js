@@ -75,8 +75,7 @@ export default class Game {
         }
     }
     rotatePiece() {
-        this.activePiece.rotation = this.activePiece.rotation < 3 ? this.activePiece.rotation + 1 : 0;
-        console.log(this.hasCollision());
+        this.activePiece.rotationIndex = this.activePiece.rotationIndex < 3 ? this.activePiece.rotationIndex + 1 : 0;
         // this.activePiece.rotationIndex = (this.activePiece.rotationIndex+1) % 4;
         if (this.hasCollision()) { //we are ckecking if our figure near by the sides or other figures
             this.activePiece.rotation = this.activePiece.rotation > 0 ? this.activePiece.rotation - 1 : 3; //if so we take the previous figure
@@ -91,14 +90,13 @@ export default class Game {
     }
     hasCollision() {
         const {y: pieceY, x: pieceX} = this.activePiece; //our position after all motions
-
         for (let y = 0; y < this.activePiece.blocks.length; y++) {
-            for (let x = 0; x < blocks[y].length; x++) {
+            for (let x = 0; x < this.activePiece.blocks[y].length; x++) {
                 // console.log(`pieceY + y = ${pieceY + y}`);
                 // console.log(`pieceY = ${pieceY}`);
                 // console.log(`blocks[y][x] = ${blocks[y][x]}`);
                 if(//we are checking should we add 1 or take 1 point back from x or y coordinate 
-                    blocks[y][x] === 1 && //This line means that as long as there are zeros here, we can still change our position by one and go beyond our field. But as soon as there is one and we are out of our field, we roll back our position by one.
+                    this.activePiece.blocks[y][x] === 1 && //This line means that as long as there are zeros here, we can still change our position by one and go beyond our field. But as soon as there is one and we are out of our field, we roll back our position by one.
                     ((this.playfield[pieceY + y] === undefined || this.playfield[pieceY + y][pieceX + x] === undefined) || //we are checking if our coordinate within playfield after motions
                     this.playfield[pieceY + y][pieceX + x])//If this cell is already filled.
                 ) {
